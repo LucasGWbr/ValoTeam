@@ -1,6 +1,41 @@
+"use client";
 import Image from 'next/image'
+import {useState} from "react";
+import {useRouter} from "next/navigation";
+import CryptoJS from "crypto-js";
+import toast from 'react-hot-toast';
+
 
 export default function Home() {
+    const [user, setUser] = useState("");
+    const [senha, setSenha] = useState("");
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const senhaCript = CryptoJS.MD5(senha).toString();
+
+        const res = await fetch('/api/login',{
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({
+                usuario: user,
+                senha: senhaCript
+            })
+
+        });
+        const data = await res.json();
+        if(!res.ok){
+            toast.error(data.message);
+        }else{
+            toast.success(data.message);
+            router.push('/LOLLLLL');
+            console.log(data);
+        }
+    }
+
+
+
     return (
 
         <div className="flex h-screen w-screen items-center justify-center">
@@ -19,19 +54,19 @@ export default function Home() {
                         Use seu usuario e senha para acessar
                     </p>
                 </div>
-                <form className="flex justify-center p-3 gap-5 align-items-center backdrop-blur-sm bg-white/50" name="login" action="login" method="post">
+                <form className="flex justify-center p-3 gap-5 align-items-center backdrop-blur-sm bg-white/50" name="login" onSubmit={handleSubmit} method="post">
                     <div>
                         <div className="form-floating m-3">
-                            <input name="nome" type="text" className="form-control" id="nome" placeholder="Nome"/>
-                            <label htmlFor="nome">Nome</label>
+                            <input name="usuario" value={user} onChange={(e) => setUser(e.target.value)} required type="text" className="form-control" id="nome" placeholder="Nome"/>
+                            <label htmlFor="nome">Usuario</label>
                         </div>
                         <div className="form-floating m-3">
-                            <input name="pass" type="password" className="form-control" id="pass" placeholder="Senha"/>
+                            <input value={senha} onChange={(e) => setSenha(e.target.value)} required name="pass" type="password" className="form-control" id="pass" placeholder="Senha"/>
                             <label htmlFor="pass">Senha</label>
                         </div>
                     </div>
                     <div>
-                        <button disabled id="enviar" type="submit" className="btn btn-primary">Login</button>
+                        <button id="enviar" type="submit" className="btn btn-primary">Login</button>
                     </div>
                 </form>
             </div>
