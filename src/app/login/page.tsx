@@ -2,36 +2,32 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Cadastro() {
+export default function Login() {
   const router = useRouter();
 
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
 
-  async function fazerCadastro() {
-    if (!usuario || !senha) {
-      alert("Preencha todos os campos");
-      return;
-    }
-
-    const res = await fetch("/api/cadastro", {
+  async function fazerLogin() {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ usuario, senha }),
     });
 
     if (res.ok) {
-      alert("Cadastro realizado com sucesso!");
-      router.push("/login");
+      const data = await res.json();
+      localStorage.setItem("id_usuario", data.usuario.id.toString());
+      router.push("/times");
     } else {
       const err = await res.json();
-      alert(err.message || "Erro no cadastro");
+      alert(err.message || "Erro no login");
     }
   }
 
   return (
     <div className="p-8 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Cadastro</h1>
+      <h1 className="text-2xl font-bold mb-6">Login</h1>
 
       <input
         type="text"
@@ -49,10 +45,10 @@ export default function Cadastro() {
       />
 
       <button
-        onClick={fazerCadastro}
-        className="bg-green-600 text-white px-4 py-2 rounded w-full"
+        onClick={fazerLogin}
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
       >
-        Cadastrar
+        Entrar
       </button>
     </div>
   );
