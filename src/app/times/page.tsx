@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface Agente {
   id: number;
@@ -98,7 +99,7 @@ export default function Times() {
 
   function sortearAleatorio() {
     if (agentes.length === 0) return;
-    let agentesSorteados: string[] = [];
+    const agentesSorteados: string[] = [];
     while (agentesSorteados.length < 5) {
       const aleatorio = agentes[Math.floor(Math.random() * agentes.length)].nome;
       if (!agentesSorteados.includes(aleatorio)) agentesSorteados.push(aleatorio);
@@ -130,7 +131,6 @@ export default function Times() {
       setNomeTime("");
       setAgenteSelecionados([]);
       setMapaSelecionado("");
-      const data = await res.json();
       const res2 = await fetch(`/api/times?id_usuario=${idUsuario}`);
       const dados = await res2.json();
       setTimes(dados.times || []);
@@ -168,7 +168,7 @@ export default function Times() {
                 title="Clique para remover"
               >
                 {agente && (
-                  <img
+                  <Image
                     src={agente.imagem}
                     alt={agente.nome}
                     width={30}

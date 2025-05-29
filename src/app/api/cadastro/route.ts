@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     const userCheck = await pool.query('SELECT * FROM usuario WHERE nome = $1', [nome]);
-    if (userCheck.rowCount > 0) {
+    if (userCheck?.rowCount && userCheck.rowCount > 0) {
       return NextResponse.json({ message: 'Usuário já existe' }, { status: 400 });
     }
 
