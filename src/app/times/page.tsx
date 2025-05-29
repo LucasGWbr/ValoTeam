@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Trash2 } from "lucide-react";
 
 interface Agente {
   id: number;
@@ -23,14 +24,11 @@ interface Mapa {
 
 export default function Times() {
   const [idUsuario, setIdUsuario] = useState<string | null>(null);
-
   const [agentes, setAgentes] = useState<Agente[]>([]);
   const [mapas, setMapas] = useState<Mapa[]>([]);
-
   const [nomeTime, setNomeTime] = useState("");
   const [agenteSelecionados, setAgenteSelecionados] = useState<string[]>([]);
   const [mapaSelecionado, setMapaSelecionado] = useState("");
-
   const [times, setTimes] = useState<Time[]>([]);
 
   useEffect(() => {
@@ -71,30 +69,6 @@ export default function Times() {
         setAgenteSelecionados([...agenteSelecionados, nome]);
       }
     }
-  }
-
-  function agentesDropdown() {
-    return (
-      <select
-        value=""
-        onChange={(e) => {
-          const val = e.target.value;
-          if (val && !agenteSelecionados.includes(val) && agenteSelecionados.length < 5) {
-            setAgenteSelecionados([...agenteSelecionados, val]);
-          }
-        }}
-        className="p-2 border mb-3"
-      >
-        <option value="">Selecione um agente</option>
-        {agentes
-          .filter((a) => !agenteSelecionados.includes(a.nome))
-          .map((agente) => (
-            <option key={agente.id} value={agente.nome}>
-              {agente.nome}
-            </option>
-          ))}
-      </select>
-    );
   }
 
   function sortearAleatorio() {
@@ -139,9 +113,20 @@ export default function Times() {
     }
   }
 
+  async function removerTime(id: number) {
+    const confirmar = confirm("Deseja remover este time?");
+    if (!confirmar) return;
+    const res = await fetch(`/api/times/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      setTimes(times.filter((t) => t.id !== id));
+    } else {
+      alert("Erro ao remover time");
+    }
+  }
+
   return (
-    <div className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Criar Time de Valorant</h1>
+    <div className="p-6 max-w-5xl mx-auto bg-black min-h-screen text-white">
+      <h1 className="text-3xl font-bold mb-6 text-red-500">Criar Time de Valorant</h1>
 
       <div className="mb-4">
         <label className="block font-semibold mb-1">Nome do Time:</label>
@@ -149,21 +134,47 @@ export default function Times() {
           type="text"
           value={nomeTime}
           onChange={(e) => setNomeTime(e.target.value)}
-          className="border p-2 w-full"
+          className="border border-red-500 bg-black text-white p-2 w-full rounded"
           placeholder="Nome do time"
         />
       </div>
 
-      <div className="mb-4">
-        <label className="block font-semibold mb-1">Selecione até 5 agentes:</label>
-        {agentesDropdown()}
-        <div className="flex gap-2 flex-wrap mb-2">
+      <div className="mb-4 text-right">
+        <label className="block font-semibold mb-1 text-left">Selecione até 5 agentes:</label>
+        <div className="flex justify-end items-center gap-2 mb-3">
+          <select
+            value=""
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val && !agenteSelecionados.includes(val) && agenteSelecionados.length < 5) {
+                setAgenteSelecionados([...agenteSelecionados, val]);
+              }
+            }}
+            className="p-2 border border-red-500 bg-black text-white rounded"
+          >
+            <option value="">Selecione um agente</option>
+            {agentes
+              .filter((a) => !agenteSelecionados.includes(a.nome))
+              .map((agente) => (
+                <option key={agente.id} value={agente.nome}>
+                  {agente.nome}
+                </option>
+              ))}
+          </select>
+          <button
+            onClick={sortearAleatorio}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+          >
+            Aleatório
+          </button>
+        </div>
+        <div className="flex justify-end gap-2 flex-wrap mb-4">
           {agenteSelecionados.map((nome) => {
             const agente = agentes.find((a) => a.nome === nome);
             return (
               <div
                 key={nome}
-                className="border p-2 flex items-center gap-2 rounded cursor-pointer"
+                className="border border-red-500 p-2 flex items-center gap-2 rounded cursor-pointer bg-black"
                 onClick={() => toggleAgente(nome)}
                 title="Clique para remover"
               >
@@ -174,6 +185,7 @@ export default function Times() {
                     width={30}
                     height={30}
                     className="rounded"
+                    unoptimized
                   />
                 )}
                 <span>{nome}</span>
@@ -181,52 +193,70 @@ export default function Times() {
             );
           })}
         </div>
-        <button
-          onClick={sortearAleatorio}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Aleatório
-        </button>
       </div>
 
       <div className="mb-6">
-        <label className="block font-semibold mb-1">Selecione o mapa:</label>
-        <select
-          value={mapaSelecionado}
-          onChange={(e) => setMapaSelecionado(e.target.value)}
-          className="p-2 border w-full"
-        >
-          <option value="">Selecione um mapa</option>
-          {Array.isArray(mapas) &&
-            mapas.map((m) => (
-              <option key={m.id} value={m.nome}>
-                {m.nome}
-              </option>
-            ))}
-        </select>
+        <label className="block font-semibold mb-2">Selecione o mapa:</label>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {mapas.map((mapa) => (
+            <div
+              key={mapa.id}
+              onClick={() => setMapaSelecionado(mapa.nome)}
+              className={`relative cursor-pointer rounded-lg overflow-hidden border-2 ${
+                mapaSelecionado === mapa.nome ? "border-red-500" : "border-gray-700"
+              }`}
+            >
+              <Image
+                src={`/maps/${mapa.nome}.png`}
+                alt={mapa.nome}
+                width={300}
+                height={150}
+                unoptimized
+                className="object-cover w-full h-32"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white text-center py-1 text-sm font-medium">
+                {mapa.nome}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <button
-        onClick={salvarTime}
-        className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
-      >
-        Salvar Time
-      </button>
+      <div className="flex justify-center mb-8">
+        <button
+          onClick={salvarTime}
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded"
+        >
+          Salvar Time
+        </button>
+      </div>
 
-      <hr className="my-8" />
-
-      <h2 className="text-2xl font-semibold mb-4">Meus Times</h2>
-      {times.length === 0 && <p>Nenhum time salvo ainda.</p>}
+      <h2 className="text-2xl font-semibold mb-4 text-red-500">Meus Times</h2>
+      {times.length === 0 && <p className="text-gray-400">Nenhum time salvo ainda.</p>}
       <ul>
         {times.map((time) => (
-          <li key={time.id} className="mb-4 border p-4 rounded shadow">
-            <h3 className="font-bold text-xl mb-2">{time.nome_time}</h3>
-            <p>
-              <strong>Mapa:</strong> {time.mapa}
-            </p>
-            <p>
-              <strong>Agentes:</strong> {time.agentes.join(", ")}
-            </p>
+          <li key={time.id} className="flex bg-zinc-900 text-white border border-red-500 rounded-lg overflow-hidden shadow mb-6">
+            <div className="relative">
+              <Image
+                src={`/maps/${time.mapa}.png`}
+                alt={time.mapa}
+                width={180}
+                height={120}
+                unoptimized
+                className="object-cover h-full w-[180px]"
+              />
+              <button
+                onClick={() => removerTime(time.id)}
+                className="absolute top-2 right-2 text-white hover:text-red-400"
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+            <div className="p-4 flex flex-col justify-center gap-2">
+              <h3 className="text-xl font-bold text-red-400">{time.nome_time}</h3>
+              <p><strong>Mapa:</strong> {time.mapa}</p>
+              <p><strong>Agentes:</strong> {time.agentes.join(", ")}</p>
+            </div>
           </li>
         ))}
       </ul>
