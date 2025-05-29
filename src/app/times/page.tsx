@@ -125,17 +125,16 @@ export default function Times() {
   }
 
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-black min-h-screen text-white">
-      <h1 className="text-3xl font-bold mb-6 text-red-500">Criar Time de Valorant</h1>
+    <div className="p-6 max-w-5xl mx-auto bg-[#ECE8E1] min-h-screen text-black">
+      <h1 className="text-3xl font-extrabold mb-6 text-red-500">Gerador de times</h1>
 
-      <div className="mb-4">
-        <label className="block font-semibold mb-1">Nome do Time:</label>
+      <div className="w-full p-8 rounded-xl">
+        <label className="block text-[#0F1923] font-bold mb-2">Nome do Time:</label>
         <input
           type="text"
           value={nomeTime}
           onChange={(e) => setNomeTime(e.target.value)}
-          className="border border-red-500 bg-black text-white p-2 w-full rounded"
-          placeholder="Nome do time"
+          className="bg-white w-full border-2 border-[#0F1923] rounded-lg p-3 mb-6"
         />
       </div>
 
@@ -150,7 +149,7 @@ export default function Times() {
                 setAgenteSelecionados([...agenteSelecionados, val]);
               }
             }}
-            className="p-2 border border-red-500 bg-black text-white rounded"
+            className="bg-[#E8E5DF] text-[#0F1923] hover:text-black border-2 border-black rounded-lg p-2"
           >
             <option value="">Selecione um agente</option>
             {agentes
@@ -163,7 +162,7 @@ export default function Times() {
           </select>
           <button
             onClick={sortearAleatorio}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+            className="bg-[#F23D58] hover:bg-[#d62e47] text-white px-6 py-2 rounded-lg font-bold"
           >
             Aleatório
           </button>
@@ -174,7 +173,7 @@ export default function Times() {
             return (
               <div
                 key={nome}
-                className="border border-red-500 p-2 flex items-center gap-2 rounded cursor-pointer bg-black"
+                className="border border-red-500 p-2 flex items-center gap-2 rounded cursor-pointer backdrop-blur-md bg-white/50 hover:bg-[#d62e47] group-hover:flex"
                 onClick={() => toggleAgente(nome)}
                 title="Clique para remover"
               >
@@ -189,6 +188,7 @@ export default function Times() {
                   />
                 )}
                 <span>{nome}</span>
+                <Trash2 className="w-5 h-5 text-white/50" />
               </div>
             );
           })}
@@ -203,7 +203,7 @@ export default function Times() {
               key={mapa.id}
               onClick={() => setMapaSelecionado(mapa.nome)}
               className={`relative cursor-pointer rounded-lg overflow-hidden border-2 ${
-                mapaSelecionado === mapa.nome ? "border-red-500" : "border-gray-700"
+                mapaSelecionado === mapa.nome ? "border-[#d62e47]" : "border-gray-700"
               }`}
             >
               <Image
@@ -225,7 +225,7 @@ export default function Times() {
       <div className="flex justify-center mb-8">
         <button
           onClick={salvarTime}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded"
+          className="bg-[#F23D58] hover:bg-[#d62e47] text-white font-semibold py-2 px-6 transition"
         >
           Salvar Time
         </button>

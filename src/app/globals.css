@@ -15,7 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ECE8E1;
     --foreground: #ededed;
   }
 }
@@ -27,4 +27,8 @@ body {
 }
 h3{
   font-family: 'Poppins', sans-serif;
+}
+h1{
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 700;
 }
