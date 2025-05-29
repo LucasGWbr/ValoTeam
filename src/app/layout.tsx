@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import {Toaster} from "react-hot-toast";
+import { Poppins } from 'next/font/google';
 
 
 const geistSans = Geist({
@@ -13,6 +14,10 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+const poppins = Poppins({
+    weight: ['400', '600', '700'],
+    subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={ `${poppins.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       <Toaster position="top-center" reverseOrder={false} />

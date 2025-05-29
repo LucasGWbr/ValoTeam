@@ -58,37 +58,58 @@ export default function Home() {
         <div className="flex h-screen w-screen items-center justify-end">
             <Image src='/1249094.jpg' alt="Fundo" fill quality={100} style={{ objectFit: 'cover' }} priority />
             <div className="mr-25 z-10 w-full max-w-xl h-screen flex flex-col justify-center border border-gray-100 backdrop-blur-md bg-[#0F1923]/60">
-                <h3 className="text-xl font-extrabold text-center mt-8">{modoCadastro ? "CADASTRO" : "LOGIN"}</h3>
-                <form className="w-full p-6" onSubmit={handleSubmit}>
-                    <input
-                        value={user}
-                        onChange={(e) => setUser(e.target.value)}
-                        required
-                        placeholder="Usuário"
-                        className="w-full mb-4 p-2"
-                    />
-                    <input
-                        type="password"
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
-                        required
-                        placeholder="Senha"
-                        className="w-full mb-4 p-2"
-                    />
-                    <div className="flex justify-between">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setModoCadastro(!modoCadastro);
-                                setSenha("");
-                            }}
-                        >
-                            {modoCadastro ? "FAZER LOGIN" : "CRIAR CONTA"}
-                        </button>
-                        <button type="submit">{modoCadastro ? "CADASTRAR" : "ENTRAR"}</button>
+
+                <h3 className="text-white text-2xl font-bold mb-6 text-center">{modoCadastro ? "CADASTRO" : "LOGIN"}</h3>
+
+                <form className="w-full p-6 " onSubmit={handleSubmit}>
+                    <div className="flex items-center border-b border-gray-300 py-2 text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2 flex-shrink-0" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                  d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <input
+                            value={user}
+                            onChange={(e) => setUser(e.target.value)}
+                            required
+                            placeholder="Usuário"
+                            className="flex-1 bg-transparent focus:outline-none text-white placeholder-gray-300"
+                        />
                     </div>
+
+                    <div className="flex items-center border-b border-gray-300 py-2 text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2 flex-shrink-0" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                  d="M12 15v2m-6-6V9a6 6 0 1112 0v2m2 0H4v10h16V11z"/>
+                        </svg>
+                        <input
+                            type="password"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            required
+                            placeholder="Senha"
+                            className="flex-1 bg-transparent focus:outline-none text-white placeholder-gray-300"
+                        />
+                    </div>
+
+                    <div className="flex gap-4 justify-center items-center my-4">
+                        <button
+                            className="bg-[#E8E5DF] hover:bg-[#d6d3cd] text-[#0F1923] hover:text-black font-semibold py-2 px-6 rounded transition"
+                            type="button"
+                                onClick={() => {
+                                    setModoCadastro(!modoCadastro);
+                                    setSenha("");
+                                }}
+                            >
+                                {modoCadastro ? "FAZER LOGIN" : "CRIAR CONTA"}
+                            </button>
+                            <button
+                                className="bg-[#F23D58] hover:bg-[#d62e47] text-white font-semibold py-2 px-6 rounded transition"
+                                type="submit">{modoCadastro ? "CADASTRAR" : "ENTRAR"}</button>
+                        </div>
                 </form>
             </div>
         </div>
-    );
+);
 }
