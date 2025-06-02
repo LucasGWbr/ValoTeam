@@ -33,15 +33,9 @@ export default function Times() {
 
   useEffect(() => {
     const id = localStorage.getItem("id_usuario");
-    if (id) setIdUsuario(id);
+    setIdUsuario(id);
   }, []);
-  if(!idUsuario){
-    return (
-        <div className="h-screen w-screen justify-items-center">
-          <h1 className="text-black">401 - Acesso não autorizado</h1>
-        </div>
-    );
-  }
+
   useEffect(() => {
     async function carregarAgentes() {
       const res = await fetch("/api/agentes");
@@ -128,6 +122,13 @@ export default function Times() {
     } else {
       alert("Erro ao remover time");
     }
+  }
+  if(!idUsuario){
+    return (
+        <div className="h-screen w-screen justify-items-center">
+          <h1 className="text-black">401 - Acesso não autorizado</h1>
+        </div>
+    );
   }
 
   return (
