@@ -29,6 +29,25 @@ h3{
   font-family: 'Poppins', sans-serif;
 }
 h1{
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Tungsten', sans-serif;
   font-weight: 700;
+  font-size: 4em;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1c1c1c;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ef4444;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f87171;
 }

@@ -104,7 +104,7 @@ export default function Home() {
                                 {modoCadastro ? "FAZER LOGIN" : "CRIAR CONTA"}
                             </button>
                             <button
-                                className="bg-[#F23D58] hover:bg-[#d62e47] text-white font-semibold py-2 px-6 rounded transition"
+                                className="bg-[#F23D58] hover:bg-[#d62e47] text-white font-semibold py-2 px-6 rounded transition-shadow"
                                 type="submit">{modoCadastro ? "CADASTRAR" : "ENTRAR"}</button>
                         </div>
                 </form>

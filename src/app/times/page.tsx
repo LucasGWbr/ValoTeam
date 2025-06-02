@@ -229,11 +229,11 @@ export default function Times() {
         >
           Salvar Time
         </button>
-      </div>
+      </div >
 
       <h2 className="text-2xl font-semibold mb-4 text-red-500">Meus Times</h2>
       {times.length === 0 && <p className="text-gray-400">Nenhum time salvo ainda.</p>}
-      <ul>
+      <ul className="max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-zinc-800">
         {times.map((time) => (
           <li key={time.id} className="flex bg-zinc-900 text-white border border-red-500 rounded-lg overflow-hidden shadow mb-6">
             <div className="relative">
