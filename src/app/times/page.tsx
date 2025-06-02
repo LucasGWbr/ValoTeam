@@ -35,7 +35,13 @@ export default function Times() {
     const id = localStorage.getItem("id_usuario");
     if (id) setIdUsuario(id);
   }, []);
-
+  if(!idUsuario){
+    return (
+        <div className="h-screen w-screen justify-items-center">
+          <h1 className="text-black">401 - Acesso não autorizado</h1>
+        </div>
+    );
+  }
   useEffect(() => {
     async function carregarAgentes() {
       const res = await fetch("/api/agentes");
