@@ -37,7 +37,30 @@ export default function RootLayout({
         className={ `${poppins.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-      <Toaster position="top-center" reverseOrder={false} />
+        <Toaster
+            position="top-center"
+            toastOptions={{
+                duration: 4000,
+                style: {
+                    background: '#333',
+                    color: '#fff',
+                    borderRadius: '8px',
+                    fontWeight: 'bold',
+                },
+                success: {
+                    iconTheme: {
+                        primary: 'green',
+                        secondary: 'white',
+                    },
+                },
+                error: {
+                    iconTheme: {
+                        primary: 'red',
+                        secondary: 'white',
+                    },
+                },
+            }}
+        />
       </body>
     </html>
   );

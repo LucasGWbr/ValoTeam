@@ -9,7 +9,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Usuário não informado' }, { status: 400 });
     }
 
-    const result = await pool.query('SELECT * FROM times WHERE id_usuario = $1', [id_usuario]);
+    const result = await pool.query('SELECT * FROM times WHERE id_usuario = $1 ORDER BY id', [id_usuario]);
 
     return NextResponse.json({ times: result.rows });
   } catch (error) {

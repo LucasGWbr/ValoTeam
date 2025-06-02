@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface Agente {
   id: number;
@@ -83,11 +84,11 @@ export default function Times() {
 
   async function salvarTime() {
     if (!idUsuario) {
-      alert("Usuário não logado.");
+      toast.error("Usuário não logado.");
       return;
     }
     if (!nomeTime || agenteSelecionados.length === 0 || !mapaSelecionado) {
-      alert("Preencha todos os campos.");
+      toast.error("Preencha todos os campos.");
       return;
     }
     const res = await fetch("/api/times", {
@@ -101,7 +102,7 @@ export default function Times() {
       }),
     });
     if (res.ok) {
-      alert("Time salvo com sucesso!");
+      toast.success("Time salvo com sucesso!");
       setNomeTime("");
       setAgenteSelecionados([]);
       setMapaSelecionado("");
@@ -109,7 +110,7 @@ export default function Times() {
       const dados = await res2.json();
       setTimes(dados.times || []);
     } else {
-      alert("Erro ao salvar time");
+      toast.error("Erro ao salvar time");
     }
   }
 
@@ -120,7 +121,7 @@ export default function Times() {
     if (res.ok) {
       setTimes(times.filter((t) => t.id !== id));
     } else {
-      alert("Erro ao remover time");
+      toast.error("Erro ao remover time");
     }
   }
   if(!idUsuario){
