@@ -157,7 +157,7 @@ export default function Times() {
                 setAgenteSelecionados([...agenteSelecionados, val]);
               }
             }}
-            className="bg-[#E8E5DF] text-[#0F1923] hover:text-black border-2 border-black rounded-lg p-2"
+            className="bg-white text-[#0F1923] hover:text-black border-2 border-black rounded-lg p-2"
           >
             <option value="">Selecione um agente</option>
             {agentes
@@ -193,6 +193,8 @@ export default function Times() {
                     height={30}
                     className="rounded"
                     unoptimized
+                    draggable={false}
+                    style={{ userSelect: 'none', pointerEvents: 'none' }}
                   />
                 )}
                 <span>{nome}</span>
@@ -221,6 +223,8 @@ export default function Times() {
                 height={150}
                 unoptimized
                 className="object-cover w-full h-32"
+                draggable={false}
+                style={{ userSelect: 'none', pointerEvents: 'none' }}
               />
               <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white text-center py-1 text-sm font-medium">
                 {mapa.nome}
@@ -252,6 +256,8 @@ export default function Times() {
                 height={120}
                 unoptimized
                 className="object-cover h-full w-[180px]"
+                draggable={false}
+                style={{ userSelect: 'none', pointerEvents: 'none' }}
               />
               <button
                 onClick={() => removerTime(time.id)}

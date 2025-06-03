@@ -55,7 +55,7 @@ export default function Home() {
 
     return (
         <div className="flex h-screen w-screen items-center justify-end">
-            <Image src='/1249094.jpg' alt="Fundo" fill quality={100} style={{ objectFit: 'cover' }} priority />
+            <Image src='/1249094.jpg' alt="Fundo" fill quality={100} draggable={false} style={{ objectFit: 'cover', userSelect: 'none', pointerEvents: 'none'}} priority />
             <div className="mr-25 z-10 w-full max-w-xl h-screen flex flex-col justify-center border border-gray-100 backdrop-blur-md bg-[#0F1923]/60">
 
                 <h3 className="text-white text-2xl font-bold mb-6 text-center">{modoCadastro ? "CADASTRO" : "LOGIN"}</h3>
