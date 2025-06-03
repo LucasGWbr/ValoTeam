@@ -33,7 +33,7 @@ export default function Times() {
   const [times, setTimes] = useState<Time[]>([]);
 
   useEffect(() => {
-    const id = localStorage.getItem("id_usuario");
+    const id = sessionStorage.getItem("id_usuario");
     setIdUsuario(id);
   }, []);
 
@@ -90,6 +90,9 @@ export default function Times() {
     if (!nomeTime || agenteSelecionados.length === 0 || !mapaSelecionado) {
       toast.error("Preencha todos os campos.");
       return;
+    }else if(agenteSelecionados.length < 5) {
+      toast.error("Adicione 5 agentes para salvar!");
+      return;
     }
     const res = await fetch("/api/times", {
       method: "POST",
@@ -141,6 +144,7 @@ export default function Times() {
         <input
           type="text"
           value={nomeTime}
+          maxLength={100}
           onChange={(e) => setNomeTime(e.target.value)}
           className="bg-white w-full border-2 border-[#0F1923] rounded-lg p-3 mb-6"
         />

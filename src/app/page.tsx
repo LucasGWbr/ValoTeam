@@ -46,7 +46,7 @@ export default function Home() {
             if (!res.ok) {
                 toast.error(data.message || "Erro no login");
             } else {
-                localStorage.setItem('id_usuario', data.usuario.id);
+                sessionStorage.setItem('id_usuario', data.usuario.id);
                 toast.success(data.message);
                 router.push('/times');
             }
