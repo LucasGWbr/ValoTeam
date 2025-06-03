@@ -37,3 +37,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Erro ao criar time' }, { status: 500 });
   }
 }
+export async function DELETE(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const idTime = url.searchParams.get('id');
+    if (!idTime) {
+      return NextResponse.json({ error: 'Time não informado' }, { status: 400 });
+    }
+    const query = await pool.query("DELETE FROM times WHERE id = $1", [idTime]);
+
+    if(query.rowCount === 0){
+      return NextResponse.json({ error: 'Erro ao excluir time 1' }, { status: 500 });
+    }else{
+      return NextResponse.json({ message: 'Time excluido com sucesso', time: query.rows[0] });
+    }
+  } catch (err) {
+    return NextResponse.json({ error: 'Erro ao excluir time' }, { status: 500 });
+  }
+}

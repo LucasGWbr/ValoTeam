@@ -120,7 +120,7 @@ export default function Times() {
   async function removerTime(id: number) {
     const confirmar = confirm("Deseja remover este time?");
     if (!confirmar) return;
-    const res = await fetch(`/api/times/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/times?id=${id}`, { method: "DELETE" });
     if (res.ok) {
       setTimes(times.filter((t) => t.id !== id));
     } else {
