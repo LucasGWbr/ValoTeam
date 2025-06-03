@@ -52,6 +52,6 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ message: 'Time excluido com sucesso', time: query.rows[0] });
     }
   } catch (err) {
-    return NextResponse.json({ error: 'Erro ao excluir time' }, { status: 500 });
+    return NextResponse.json({ error: 'Erro ao excluir time' + err}, { status: 500 });
   }
 }
