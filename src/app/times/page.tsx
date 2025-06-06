@@ -167,7 +167,7 @@ export default function Times() {
         <input
           type="text"
           value={nomeTime}
-          maxLength={100}
+          maxLength={20}
           onChange={(e) => setNomeTime(e.target.value)}
           className="bg-white w-full border-2 border-[#0F1923] rounded-lg p-3 mb-6"
         />
@@ -275,34 +275,37 @@ export default function Times() {
       <ul className="max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-zinc-800">
         {times.map((time) => (
           <li key={time.id} className="flex bg-zinc-900 text-white border border-red-500 rounded-lg overflow-hidden shadow mb-6">
-            <div className="relative">
-              <Image
-                src={`/maps/${time.mapa}.png`}
-                alt={time.mapa}
-                width={180}
-                height={120}
-                unoptimized
-                className="object-cover h-full w-[180px]"
-                draggable={false}
-                style={{ userSelect: 'none', pointerEvents: 'none' }}
-              />
-              <button
-                onClick={() => removerTime(time.id)}
-                className="absolute top-2 right-2 text-white hover:text-red-400"
-              >
-                <Trash2 size={20} />
-              </button>
-              <button
-                  onClick={() => abrirModalEdicao(time)}
-                  className="absolute bottom-2 right-2 text-white hover:text-green-600 "
-              >
-                {<Pencil size={18} />}
-              </button>
-            </div>
-            <div className="p-4 flex flex-col justify-center gap-2">
-              <h3 className="font-bold text-base">{time.nome_time}</h3>
-              <p><strong>Mapa:</strong> {time.mapa}</p>
-              <p><strong>Agentes:</strong> {time.agentes.join(", ")}</p>
+            <div className="flex gap-2">
+              <div className="relative w-[180px] flex-shrink-0">
+                <Image
+                    src={`/maps/${time.mapa}.png`}
+                    alt={time.mapa}
+                    width={180}
+                    height={120}
+                    unoptimized
+                    className="object-cover h-full w-full"
+                    draggable={false}
+                    style={{ userSelect: 'none', pointerEvents: 'none' }}
+                />
+                <button
+                    onClick={() => removerTime(time.id)}
+                    className="absolute top-2 right-2 text-white hover:text-red-400"
+                >
+                  <Trash2 size={20} />
+                </button>
+                <button
+                    onClick={() => abrirModalEdicao(time)}
+                    className="absolute bottom-2 right-2 text-white hover:text-green-600"
+                >
+                  <Pencil size={18} />
+                </button>
+              </div>
+
+              <div className="p-4 flex flex-col justify-center gap-2 w-auto">
+                <h3 className="font-bold text-base">{time.nome_time}</h3>
+                <p><strong>Mapa:</strong> {time.mapa}</p>
+                <p><strong>Agentes:</strong> {time.agentes.join(", ")}</p>
+              </div>
             </div>
           </li>
         ))}

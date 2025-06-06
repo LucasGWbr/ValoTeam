@@ -40,7 +40,7 @@ export default function EditTimeModal({ isOpen, onClose, time, onSave }: EditTim
                     <input
                         type="text"
                         className="text-black w-full border border-black rounded p-2 mb-4 bg-white"
-                        maxLength={100}
+                        maxLength={20}
                         value={novoNome}
                         onChange={(e) => setNovoNome(e.target.value)}
                     />
