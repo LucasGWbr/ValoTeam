@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import {Check, Trash2} from "lucide-react";
+import {Trash2} from "lucide-react";
 import { Pencil } from 'lucide-react';
 import toast from "react-hot-toast";
 import EditTimeModal from "../components/editTimes";
@@ -55,17 +55,16 @@ export default function Times() {
     carregarAgentes();
     carregarMapas();
   }, []);
-
+  
+  useEffect(() => {
+    if (!idUsuario) return;
+    carregarTimes();
+  }, [idUsuario]);
   async function carregarTimes() {
     const res = await fetch(`/api/times?id_usuario=${idUsuario}`);
     const data = await res.json();
     setTimes(data.times || []);
   }
-  useEffect(() => {
-    if (!idUsuario) return;
-    carregarTimes();
-  }, [idUsuario]);
-
   function toggleAgente(nome: string) {
     if (agenteSelecionados.includes(nome)) {
       setAgenteSelecionados(agenteSelecionados.filter((a) => a !== nome));
