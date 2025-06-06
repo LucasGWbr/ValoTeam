@@ -55,3 +55,23 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Erro ao excluir time' + err}, { status: 500 });
   }
 }
+export async function PUT(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const idTime = url.searchParams.get('id');
+    if (!idTime) {
+      return NextResponse.json({ error: 'Time não informado' }, { status: 400 });
+    }
+    const { nome_time } = await request.json();
+
+    const query = await pool.query("UPDATE times SET nome_time = $1 WHERE id=$2", [nome_time, idTime]);
+
+    if(query.rowCount === 0){
+      return NextResponse.json({ error: 'Erro ao atualizar time' }, { status: 500 });
+    }else{
+      return NextResponse.json({ message: 'Time atualizado com sucesso', time: query.rows[0] });
+    }
+  } catch (err) {
+    return NextResponse.json({ error: 'Erro ao editar' + err}, { status: 500 });
+  }
+}

@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Trash2 } from "lucide-react";
+import {Check, Trash2} from "lucide-react";
+import { Pencil } from 'lucide-react';
 import toast from "react-hot-toast";
+import EditTimeModal from "../components/editTimes";
 
 interface Agente {
   id: number;
@@ -31,6 +33,8 @@ export default function Times() {
   const [agenteSelecionados, setAgenteSelecionados] = useState<string[]>([]);
   const [mapaSelecionado, setMapaSelecionado] = useState("");
   const [times, setTimes] = useState<Time[]>([]);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [timeEditando, setTimeEditando] = useState<Time | null>(null);
 
   useEffect(() => {
     const id = sessionStorage.getItem("id_usuario");
@@ -52,13 +56,13 @@ export default function Times() {
     carregarMapas();
   }, []);
 
+  async function carregarTimes() {
+    const res = await fetch(`/api/times?id_usuario=${idUsuario}`);
+    const data = await res.json();
+    setTimes(data.times || []);
+  }
   useEffect(() => {
     if (!idUsuario) return;
-    async function carregarTimes() {
-      const res = await fetch(`/api/times?id_usuario=${idUsuario}`);
-      const data = await res.json();
-      setTimes(data.times || []);
-    }
     carregarTimes();
   }, [idUsuario]);
 
@@ -81,12 +85,32 @@ export default function Times() {
     }
     setAgenteSelecionados(agentesSorteados);
   }
-
-  async function salvarTime() {
-    if (!idUsuario) {
-      toast.error("Usuário não logado.");
+  const abrirModalEdicao = (time: Time) => {
+    setTimeEditando(time);
+    setModalAberto(true);
+  };
+  async function editarTimeNome(id: number, novo: string) {
+    if(times.find((t) => t.id === id)?.nome_time.toString()===novo){
+      toast.error("Nome novo é igual ao anterior!");
       return;
     }
+    const res = await fetch(`/api/times?id=${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome_time: novo }),
+    });
+
+    if (res.ok) {
+      toast.success("Time atualizado!");
+      await carregarTimes();
+      setModalAberto(false);
+      console.log("Atualização feita");
+    } else {
+      toast.error("Erro ao atualizar nome do time");
+    }
+  }
+
+  async function salvarTime() {
     if (!nomeTime || agenteSelecionados.length === 0 || !mapaSelecionado) {
       toast.error("Preencha todos os campos.");
       return;
@@ -269,15 +293,27 @@ export default function Times() {
               >
                 <Trash2 size={20} />
               </button>
+              <button
+                  onClick={() => abrirModalEdicao(time)}
+                  className="absolute bottom-2 right-2 text-white hover:text-green-600 "
+              >
+                {<Pencil size={18} />}
+              </button>
             </div>
             <div className="p-4 flex flex-col justify-center gap-2">
-              <h3 className="text-xl font-bold text-red-400">{time.nome_time}</h3>
+              <h3 className="font-bold text-base">{time.nome_time}</h3>
               <p><strong>Mapa:</strong> {time.mapa}</p>
               <p><strong>Agentes:</strong> {time.agentes.join(", ")}</p>
             </div>
           </li>
         ))}
       </ul>
+      <EditTimeModal
+          isOpen={modalAberto}
+          onClose={() => setModalAberto(false)}
+          time={timeEditando}
+          onSave={editarTimeNome}
+      />
     </div>
   );
 }
